@@ -1,0 +1,257 @@
+// SCSS: Import mixins for reuse
+@import '../../../styles/mixins';
+
+:host {
+  --header-bg: #ffffff;
+  --header-shadow: rgba(0, 0, 0, 0.1);
+  --text-primary: #2c3e50;
+  --text-secondary: #7f8c8d;
+  --accent-color: #3498db;
+  --hover-bg: #ecf0f1;
+  
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--header-bg);
+  @include card-shadow(1); // SCSS: Using mixin for consistent shadows
+  @include transition(background); // SCSS: Using transition mixin
+}
+
+.header {
+  width: 100%;
+  
+  &.menu-open {
+    .nav-mobile {
+      transform: translateX(0);
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+.navbar {
+  @include flex-center(row); // SCSS: Using flex-center mixin
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  
+  @include respond-to(mobile) { // SCSS: Using responsive mixin
+    padding: 1rem;
+  }
+}
+
+.navbar-brand {
+  @include flex-center(row); // SCSS: Reusing mixin
+  gap: 1rem;
+  
+  h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    @include text-truncate; // SCSS: Prevent text overflow
+    max-width: 200px;
+    
+    @include respond-to(mobile) { // SCSS: Mobile-specific styles
+      font-size: 1.25rem;
+      max-width: 150px;
+    }
+  }
+  
+  .year {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    background: var(--accent-color);
+    color: white;
+    border-radius: 12px;
+    @include transition(transform); // SCSS: Smooth animation
+    
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.nav-desktop {
+  @include flex-center(row); // SCSS: Flex layout
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.5rem;
+  
+  @include respond-to(mobile) { // SCSS: Hide on mobile
+    display: none;
+  }
+  
+  .nav-item {
+    .nav-link {
+      @include flex-center(row); // SCSS: Center icon and text
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 500;
+      border-radius: 8px;
+      @include hover-lift(-2px, 1); // SCSS: Hover effect mixin
+      @include transition(all); // SCSS: Smooth transitions
+      
+      .icon {
+        font-size: 1.5rem;
+        @include transition(transform); // SCSS: Icon animation
+      }
+      
+      &:hover {
+        background: var(--hover-bg);
+        
+        .icon {
+          transform: scale(1.2);
+        }
+      }
+      
+      &.active {
+        background: var(--accent-color);
+        color: white;
+        @include card-shadow(2); // SCSS: Elevated shadow for active state
+      }
+    }
+  }
+}
+
+.menu-toggle {
+  @include button-base; // SCSS: Using button mixin
+  display: none;
+  background: none;
+  border: 2px solid var(--text-secondary);
+  color: var(--text-primary);
+  
+  @include respond-to(mobile) { // SCSS: Show only on mobile
+    display: inline-flex;
+  }
+  
+  &:hover {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+    transform: scale(1.05);
+  }
+}
+
+.nav-mobile {
+  position: fixed;
+  top: 68px;
+  left: 0;
+  right: 0;
+  background: var(--header-bg);
+  @include card-shadow(3); // SCSS: Deep shadow for overlay
+  transform: translateX(-100%);
+  opacity: 0;
+  visibility: hidden;
+  @include transition(all); // SCSS: Smooth slide animation
+  max-height: calc(100vh - 68px);
+  overflow-y: auto;
+  @include custom-scrollbar; // SCSS: Custom scrollbar styling
+  
+  .mobile-menu {
+    list-style: none;
+    margin: 0;
+    padding: 1rem 0;
+    
+    .mobile-item {
+      .mobile-link {
+        @include flex-center(row); // SCSS: Center content
+        padding: 1rem 2rem;
+        text-decoration: none;
+        color: var(--text-primary);
+        font-weight: 500;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        @include transition(all); // SCSS: Smooth hover
+        
+        &:hover {
+          background: var(--hover-bg);
+          padding-left: 2.5rem; // Slide effect
+        }
+        
+        &:active {
+          background: var(--accent-color);
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+// Dark theme support
+@media (prefers-color-scheme: dark) {
+  :host {
+    --header-bg: #1a1a1a;
+    --header-shadow: rgba(255, 255, 255, 0.1);
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --hover-bg: #2c2c2c;
+  }
+}
+
+
+.mobile-controls {
+  @include flex-center(row); // SCSS: Flex layout
+  gap: 0.5rem;
+  
+  @include respond-to(desktop) { // SCSS: Hide on desktop
+    display: none;
+  }
+}
+
+.theme-toggle {
+  @include button-base; // SCSS: Button mixin
+  padding: 0.5rem;
+  background: var(--hover-bg);
+  border: none;
+  border-radius: 50%; // CSS: Circle button
+  width: 40px;
+  height: 40px;
+  @include transition(all);
+  
+  .theme-icon {
+    font-size: 1.2rem;
+    display: block;
+    @include transition(transform);
+  }
+  
+  &:hover {
+    background: var(--accent-color);
+    transform: rotate(180deg); // CSS: Rotation animation
+    
+    .theme-icon {
+      transform: scale(1.2);
+    }
+  }
+  
+  &.theme-toggle-mobile {
+    @include respond-to(desktop) {
+      display: none;
+    }
+  }
+}
+
+// Update dark theme with class-based approach
+:host-context(.dark-theme) { // Angular: Context-based styling
+  --header-bg: #1a1a1a;
+  --header-shadow: rgba(255, 255, 255, 0.1);
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --hover-bg: #2c2c2c;
+  --accent-color: #2980b9;
+}
+
+:host-context(.light-theme) {
+  --header-bg: #ffffff;
+  --header-shadow: rgba(0, 0, 0, 0.1);
+  --text-primary: #2c3e50;
+  --text-secondary: #7f8c8d;
+  --hover-bg: #ecf0f1;
+  --accent-color: #3498db;
+}

@@ -1,0 +1,57 @@
+<header class="header" [class.menu-open]="isMenuOpen">
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <h1>{{ title }}</h1>
+            <span class="year" [title]="'Copyright ' + currentYear">{{ currentYear }}</span>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <ul class="nav-desktop">
+            <li *ngFor="let item of navigationItems; trackBy: trackByItem" class="nav-item">
+                <!-- Angular: Use click for programmatic navigation -->
+                <a (click)="navigateToSection(item)" 
+                   [class.active]="isActiveRoute(item.route)" 
+                   class="nav-link">
+                    <i class="icon" [innerHTML]="item.icon"></i>
+                    {{ item.name }}
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <button (click)="toggleTheme()" 
+                        class="theme-toggle"
+                        [attr.aria-label]="'Toggle ' + (isDarkTheme() ? 'light' : 'dark') + ' theme'">
+                    <span class="theme-icon">{{ isDarkTheme() ? '☀️' : '🌙' }}</span>
+                </button>
+            </li>
+        </ul>
+
+        <!-- Mobile Menu Toggle -->
+        <div class="mobile-controls">
+            <button (click)="toggleTheme()" 
+                    class="theme-toggle theme-toggle-mobile"
+                    [attr.aria-label]="'Toggle theme'">
+                <span class="theme-icon">{{ isDarkTheme() ? '☀️' : '🌙' }}</span>
+            </button>
+            
+            <button class="menu-toggle" 
+                    (click)="toggleMenu()" 
+                    [attr.aria-expanded]="isMenuOpen">
+                {{ isMenuOpen ? 'Close' : 'Menu' }}
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div *ngIf="isMenuOpen" class="nav-mobile">
+            <ul class="mobile-menu">
+                <li *ngFor="let item of navigationItems; trackBy: trackByItem" class="mobile-item">
+                    <a (click)="navigateToSection(item)" 
+                       [class.active]="isActiveRoute(item.route)"
+                       class="mobile-link">
+                        {{ item.name }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
