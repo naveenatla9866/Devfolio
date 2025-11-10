@@ -1,0 +1,16 @@
+@import '../../../styles/mixins';
+
+.page-container {
+  min-height: calc(100vh - 68px);
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  
+  .hero {
+    text-align: center;
+    padding: 4rem 0;
+    
+    h1 { font-size: 3rem; margin: 0; }
+    p { font-size: 1.2rem; color: var(--text-secondary); }
+  }
+}
